@@ -107,51 +107,7 @@ In this task, you will configure web app deployment settings.
 
     >**Note:** You will need these credentials in the next task of this lab.
 
-#### Task 4: Deploy code to the staging deployment slot
 
-In this task, you will deploy code to the staging deployment slot.
-
-1. In the Azure portal, open the **Azure Cloud Shell** by clicking on the icon in the top right of the Azure Portal.
-
-1. If prompted to select either **Bash** or **PowerShell**, select **PowerShell**.
-
-    >**Note**: If this is the first time you are starting **Cloud Shell** and you are presented with the **You have no storage mounted** message, select the subscription you are using in this lab, and click **Create storage**.
-
-1. From the Cloud Shell pane, run the following to clone the remote repository containing the code for the web app.
-
-   ```powershell
-   git clone https://github.com/Azure-Samples/php-docs-hello-world
-   ```
-
-1. From the Cloud Shell pane, run the following to set the current location to the newly created clone of the local repository containing the sample web app code.
-
-   ```powershell
-   Set-Location -Path $HOME/php-docs-hello-world/
-   ```
-
-1. From the Cloud Shell pane, run the following to add the remote git (make sure to replace the `[deployment_user_name]` and `[git_clone_url]` placeholders with the value of the **Deployment Credentials** user name and **Git Clone Url**, respectively, which you identified in previous task):
-
-   ```powershell
-   git remote add [deployment_user_name] [git_clone_url]
-   ```
-
-    >**Note**: The value following `git remote add` does not have to match the **Deployment Credentials** user name, but has to be unique
-
-1. From the Cloud Shell pane, run the following to push the sample web app code from the local repository to the Azure web app staging deployment slot (make sure to replace the `[deployment_user_name]` placeholder with the value of the **Deployment Credentials** user name, which you identified in previous task):
-
-   ```powershell
-   git push [deployment_user_name] master
-   ```
-
-1. If prompted to authenticate, type the `[deployment_user_name]` and the corresponding password (which you set in the previous task).
-
-1. Close the Cloud Shell pane.
-
-1. On the staging slot blade, click **Overview** and then click the **URL** link to display the default web page in a new browser tab.
-
-1. Verify that the browser page displays the **Hello World!** message and close the new tab.
-
-#### Task 5: Swap the staging slots
 
 In this task, you will swap the staging slot with the production slot
 
@@ -204,37 +160,6 @@ In this task, you will configure and test autoscaling of Azure web app.
     | Instance limits Default | **1** |
 
 1. Click **Save**.
-
-1. In the Azure portal, open the **Azure Cloud Shell** by clicking on the icon in the top right of the Azure Portal.
-
-1. If prompted to select either **Bash** or **PowerShell**, select **PowerShell**.
-
-1. From the Cloud Shell pane, run the following to identify the URL of the Azure web app.
-
-   ```powershell
-   $rgName = 'az104-09a-rg1'
-
-   $webapp = Get-AzWebApp -ResourceGroupName $rgName
-   ```
-
-1. From the Cloud Shell pane, run the following to start and infinite loop that sends the HTTP requests to the web app:
-
-   ```powershell
-   while ($true) { Invoke-WebRequest -Uri $webapp.DefaultHostName }
-   ```
-
-1. Minimize the Cloud Shell pane (but do not close it) and, on the web app blade, in the **Monitoring** section, click **Process explorer**.
-
-    >**Note**: Process explorer facilitates monitoring the number of instances and their resource utilization.
-
-1. Monitor the utilization and the number of instances for a few minutes.
-
-    >**Note**: You may need to **Refresh** the page.
-
-1. Once you notice that the number of instances has increased to 2, reopen the Cloud Shell pane and terminate the script by pressing **Ctrl+C**.
-
-1. Close the Cloud Shell pane.
-
 #### Clean up resources
 
    >**Note**: Remember to remove any newly created Azure resources that you no longer use. Removing unused resources ensures you will not see unexpected charges.
@@ -242,18 +167,6 @@ In this task, you will configure and test autoscaling of Azure web app.
 1. In the Azure portal, open the **PowerShell** session within the **Cloud Shell** pane.
 
 1. List all resource groups created throughout the labs of this module by running the following command:
-
-   ```powershell
-   Get-AzResourceGroup -Name 'az104-09a*'
-   ```
-
-1. Delete all resource groups you created throughout the labs of this module by running the following command:
-
-   ```powershell
-   Get-AzResourceGroup -Name 'az104-09a*' | Remove-AzResourceGroup -Force -AsJob
-   ```
-
-    >**Note**: The command executes asynchronously (as determined by the -AsJob parameter), so while you will be able to run another PowerShell command immediately afterwards within the same PowerShell session, it will take a few minutes before the resource groups are actually removed.
 
 #### Review
 
